@@ -1,5 +1,5 @@
 # HCDiskCache
-使用SQLite.swift写的磁盘缓存demo
+使用SQLite.swift写的磁盘缓存demo,各位老哥觉得还行的右上角给个stat呗
 
 [SQLite.swift文档链接](https://github.com/stephencelis/SQLite.swift/blob/master/Documentation/Index.md#installation)
 ## 说明
