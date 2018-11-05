@@ -49,8 +49,8 @@ class HCDiskCacheOperator: NSObject {
     init(userIdentify:String = "default") {
         _userIdentify = userIdentify
         super.init()
-       
     }
+    private let _lock = DispatchSemaphore.init(value: 1)
     
     //MARK: - public
     ///清空所有的数据，默认保留空表
@@ -96,6 +96,13 @@ class HCDiskCacheOperator: NSObject {
     }
     
     private func _getObject(forKey key:String,type:HCCacheDataType)->String?{
+        _lock.wait()
+        let res = __getObject(forKey: key, type: type);
+        _lock.signal()
+        return res;
+    }
+    
+    private func __getObject(forKey key:String,type:HCCacheDataType)->String?{
         if let db = HCDiskCacheOperator._getDB(){
             let table = self._getStringTabel()
             let _key = Expression<String>("key")
@@ -114,7 +121,7 @@ class HCDiskCacheOperator: NSObject {
                             return resArray.first?[_value]
                         }     
                     }else{
-                        print("do not query the result...")
+                        print("do not query the result for the key:\(key)")
                     }
                 }catch{
                     print("query error:\(error)")
@@ -123,11 +130,16 @@ class HCDiskCacheOperator: NSObject {
         }
         return nil
     }
+    
     private func _setObject(_ value:String,forKey key:String,type:HCCacheDataType){
-        
+        _lock.wait()
+        __setObject(value, forKey: key, type: type);
+        _lock.signal()
+    }
+    
+    private func __setObject(_ value:String,forKey key:String,type:HCCacheDataType){
         if let db = HCDiskCacheOperator._getDB(){
             let table = self._getStringTabel()
-            
             var needInsert = false
             let _id = Expression<Int64>("id")
             let _key = Expression<String>("key")
@@ -174,6 +186,13 @@ class HCDiskCacheOperator: NSObject {
     }
     
     private func _removeObject(forKey key:String)->Bool{
+        _lock.wait()
+        let res = __removeObject(forKey: key);
+        _lock.signal()
+        return res;
+    }
+    
+    private func __removeObject(forKey key:String)->Bool{
         var success = false
         if let db = HCDiskCacheOperator._getDB(){
             let table = self._getStringTabel()
@@ -362,5 +381,4 @@ extension HCDiskCacheOperator: HCCacheDelegate {
     func remove(forKey key:String)->Bool{
         return self._removeObject(forKey:key)
     }
-
 }

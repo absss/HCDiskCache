@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		8A39FF8E3CE3E2D9E1B94E72 /* Pods_HCDiskCache.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6806AC52A7646BE2D6D3739A /* Pods_HCDiskCache.framework */; };
+		9E52EE2A21902764006B59DD /* Performance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E52EE2921902764006B59DD /* Performance.swift */; };
 		9ED5975420B65F3F00F32006 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ED5975320B65F3F00F32006 /* AppDelegate.swift */; };
 		9ED5975620B65F3F00F32006 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ED5975520B65F3F00F32006 /* ViewController.swift */; };
 		9ED5975920B65F3F00F32006 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9ED5975720B65F3F00F32006 /* Main.storyboard */; };
@@ -38,6 +39,7 @@
 /* Begin PBXFileReference section */
 		6806AC52A7646BE2D6D3739A /* Pods_HCDiskCache.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_HCDiskCache.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		71E0387CD0D78E4468DCF82F /* Pods-HCDiskCache.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HCDiskCache.release.xcconfig"; path = "Pods/Target Support Files/Pods-HCDiskCache/Pods-HCDiskCache.release.xcconfig"; sourceTree = "<group>"; };
+		9E52EE2921902764006B59DD /* Performance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Performance.swift; sourceTree = "<group>"; };
 		9ED5975020B65F3F00F32006 /* HCDiskCache.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HCDiskCache.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9ED5975320B65F3F00F32006 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9ED5975520B65F3F00F32006 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -117,6 +119,7 @@
 				9ED5978120B65FE500F32006 /* HCDiskCacheOperator.swift */,
 				9ED5975320B65F3F00F32006 /* AppDelegate.swift */,
 				9ED5975520B65F3F00F32006 /* ViewController.swift */,
+				9E52EE2921902764006B59DD /* Performance.swift */,
 				9ED5975720B65F3F00F32006 /* Main.storyboard */,
 				9ED5975A20B65F3F00F32006 /* Assets.xcassets */,
 				9ED5975C20B65F3F00F32006 /* LaunchScreen.storyboard */,
@@ -345,6 +348,7 @@
 			files = (
 				9ED5975620B65F3F00F32006 /* ViewController.swift in Sources */,
 				9ED5978220B65FE500F32006 /* HCDiskCacheOperator.swift in Sources */,
+				9E52EE2A21902764006B59DD /* Performance.swift in Sources */,
 				9ED5975420B65F3F00F32006 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
