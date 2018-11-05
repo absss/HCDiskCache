@@ -18,48 +18,27 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
         //MARK:- 测试是否存储是否正确
         let cache = HCDiskCacheOperator.init() //使用默认userIdf
-        cache.hc_setString("hello wrold", forKey: "myKey1")
-        cache.hc_setString("窗前明月光", forKey: "myKey1")
-        cache.hc_setInt(345, forKey: "myKey1")
-        cache.hc_setDouble(615.5, forKey: "myKey1")
-        if let res = cache.hc_Double(forKey: "myKey1"){
+        cache.setString("hello wrold", forKey: "myKey1")
+        cache.setString("窗前明月光", forKey: "myKey1")
+        cache.setInt(345, forKey: "myKey1")
+        cache.setDouble(615.5, forKey: "myKey1")
+        if let res = cache.double(forKey: "myKey1"){
             print("the cache value is \(res)")
         }
         
         //MARK:- 测试多表存储
         let cache2 = HCDiskCacheOperator.init(userIdentify: "MyuserIdentify2") //使用默认userIdf
-        cache2.hc_setString("hello wrold hello wrold", forKey: "myKey1")
-        cache2.hc_setString("窗前明月光，疑是地上霜，举头望明月，低头思故乡", forKey: "myKey1")
-        cache2.hc_setInt(345345, forKey: "myKey1")
-        cache2.hc_setDouble(615.5555, forKey: "myKey1")
+        cache2.setString("hello wrold hello wrold", forKey: "myKey1")
+        cache2.setString("窗前明月光，疑是地上霜，举头望明月，低头思故乡", forKey: "myKey1")
+        cache2.setInt(345345, forKey: "myKey1")
+        cache2.setDouble(615.5555, forKey: "myKey1")
        
-        if let res = cache.hc_Double(forKey: "myKey1"){
+        if let res = cache.double(forKey: "myKey1"){
             print("the cache value is \(res)")
         }
-        if let res2 = cache2.hc_Double(forKey: "myKey1"){
+        if let res2 = cache2.double(forKey: "myKey1"){
             print("the cache2 value is \(res2)")
         }
-        
-        //MARK:- 测试增删改查速度
-//        let timeStamp1 = Date().timeIntervalSince1970
-//        for i in 0..<10000{
-//            cache.hc_setString("窗前明月光，疑是地上霜，举头望明月，低头思故乡", forKey: String.init(i))
-//        }
-//        let timeStamp2 = Date().timeIntervalSince1970
-        
-//        for i in 0..<10000{
-//            cache.hc_setString("窗前明月光，疑是地上霜，举头望明月，低头思故乡", forKey: String.init(i))
-//        }
-//        let timeStamp3 = Date().timeIntervalSince1970
-////
-//        for i in 0..<10000{
-//            cache.hc_remove(forKey: String.init(i))
-//        }
-//        let timeStamp4 = Date().timeIntervalSince1970
-        
-//        print("新增10000个时间差:\(timeStamp2-timeStamp1)")
-//        print("修改10000个时间差:\(timeStamp3-timeStamp2)")
-//        print("移除10000个时间差:\(timeStamp4-timeStamp3)")
         
         return true
     }

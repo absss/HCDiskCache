@@ -18,29 +18,29 @@ enum HCCacheDataType:Int {
 }
 protocol HCCacheDelegate {
     
-    func hc_setString(_ value:String,forKey key:String)
-    func hc_setBool(_ value:Bool,forKey key:String)
-    func hc_setInt(_ value:Int,forKey key:String)
-    func hc_setDouble(_ value:Double,forKey key:String)
-    func hc_setArray(_ value:NSArray,forKey key:String)
-    func hc_setDictionary(_ value:NSDictionary,forKey key:String)
-    func hc_set(_ value:Any,forkey key:String)
+    func setString(_ value:String,forKey key:String)
+    func setBool(_ value:Bool,forKey key:String)
+    func setInt(_ value:Int,forKey key:String)
+    func setDouble(_ value:Double,forKey key:String)
+    func setArray(_ value:NSArray,forKey key:String)
+    func setDictionary(_ value:NSDictionary,forKey key:String)
+    func set(_ value:Any,forkey key:String)
     
-    func hc_String(forKey key:String)->String?
-    func hc_Bool(forKey key:String)->Bool?
-    func hc_Int(forKey key:String)->Int?
-    func hc_Double(forKey key:String)->Double?
-    func hc_Array(forKey key:String)->NSArray?
-    func hc_Dictionary(forKey key:String)->NSDictionary?
-    func hc_object(forkey key:String)->Any?
+    func string(forKey key:String)->String?
+    func bool(forKey key:String)->Bool?
+    func int(forKey key:String)->Int?
+    func double(forKey key:String)->Double?
+    func array(forKey key:String)->NSArray?
+    func dictionary(forKey key:String)->NSDictionary?
+    func object(forkey key:String)->Any?
     
-    func hc_removeString(forKey key:String)->Bool
-    func hc_removeBool(forKey key:String)->Bool
-    func hc_removeInt(forKey key:String)->Bool
-    func hc_removeDouble(forKey key:String)->Bool
-    func hc_removeArray(forKey key:String)->Bool
-    func hc_removeDictionary(forKey key:String)->Bool
-    func hc_remove(forKey key:String)->Bool
+    func removeString(forKey key:String)->Bool
+    func removeBool(forKey key:String)->Bool
+    func removeInt(forKey key:String)->Bool
+    func removeDouble(forKey key:String)->Bool
+    func removeArray(forKey key:String)->Bool
+    func removeDictionary(forKey key:String)->Bool
+    func remove(forKey key:String)->Bool
  
 }
 
@@ -51,6 +51,8 @@ class HCDiskCacheOperator: NSObject {
         super.init()
        
     }
+    
+    //MARK: - public
     ///清空所有的数据，默认保留空表
     public func clear(remainTable:Bool = true){
         let table = self._getStringTabel()
@@ -74,6 +76,7 @@ class HCDiskCacheOperator: NSObject {
         }
     }
     
+    //MARK: - private
     ///获取数据库
     private static func _getDB()->Connection?{
         var db:Connection? = nil
@@ -178,10 +181,10 @@ class HCDiskCacheOperator: NSObject {
             let alice = table.filter(_key == key)
             do {
                 if try db.run(alice.delete()) > 0 {
-                    print("\(key) deleted success")
+                    print("\(key) delete success")
                     success = true
                 } else {
-                    print("\(key) do not found")
+                    print("\(key) do not found, delete fail")
                 }
             } catch {
                 print("delete failed: \(error)")
@@ -195,57 +198,27 @@ class HCDiskCacheOperator: NSObject {
 
 extension HCDiskCacheOperator: HCCacheDelegate {
 
-    func hc_setString(_ value: String, forKey key: String) {
+    func setString(_ value: String, forKey key: String) {
         self._setObject(value, forKey: key, type: .HCCacheDataTypeString)
     }
     
-    func hc_set(_ value:Any,forkey key:String){
-        if value is String{
-            if let v1 = value as? String{
-                self.hc_setString(v1, forKey: key)
-            }
-        }else if value is Int{
-            if let v1 = value as? Int{
-                self.hc_setInt(v1, forKey: key)
-            }
-            
-        }else if value is Bool{
-            if let v1 = value as? Bool{
-                self.hc_setBool(v1, forKey: key)
-            }
-        }else if value is Double{
-            if let v1 = value as? Double{
-                self.hc_setDouble(v1, forKey: key)
-            }
-        }else if value is NSDictionary{
-            if let v1 = value as? NSDictionary{
-                self.hc_setDictionary(v1, forKey: key)
-            }
-        }else if value is NSArray{
-            if let v1 = value as? NSArray{
-                self.hc_setArray(v1, forKey: key)
-            }
-        }
-    }
-    
-    
-    func hc_setBool(_ value:Bool,forKey key:String){
+    func setBool(_ value:Bool,forKey key:String){
         let v1 = String(value)
         self._setObject(v1, forKey: key, type: .HCCacheDataTypeBool)
     }
     
-    func hc_setInt(_ value:Int,forKey key:String){
+    func setInt(_ value:Int,forKey key:String){
         let v1 = String(value)
         self._setObject(v1, forKey: key, type: .HCCacheDataTypeInt)
         
     }
     
-    func hc_setDouble(_ value:Double,forKey key:String){
+    func setDouble(_ value:Double,forKey key:String){
         let v1 = String(value)
         self._setObject(v1, forKey: key, type: .HCCacheDataTypeDouble)
     }
     
-    func hc_setArray(_ value: NSArray, forKey key: String) {
+    func setArray(_ value: NSArray, forKey key: String) {
         do {
             let jsonData = try JSONSerialization.data(withJSONObject: value, options: [])
             if let str = NSString.init(data: jsonData, encoding: String.Encoding.utf8.rawValue) as String?{
@@ -257,7 +230,7 @@ extension HCDiskCacheOperator: HCCacheDelegate {
         }
     }
     
-    func hc_setDictionary(_ value: NSDictionary, forKey key: String) {
+    func setDictionary(_ value: NSDictionary, forKey key: String) {
         do {
             let jsonData = try JSONSerialization.data(withJSONObject: value, options: [])
             if let str = NSString.init(data: jsonData, encoding: String.Encoding.utf8.rawValue) as String?{
@@ -269,36 +242,62 @@ extension HCDiskCacheOperator: HCCacheDelegate {
         }
     }
     
-    func hc_String(forKey key:String)->String?{
+    func set(_ value:Any,forkey key:String){
+        if value is String{
+            if let v1 = value as? String{
+                self.setString(v1, forKey: key)
+            }
+        }else if value is Int{
+            if let v1 = value as? Int{
+                self.setInt(v1, forKey: key)
+            }
+            
+        }else if value is Bool{
+            if let v1 = value as? Bool{
+                self.setBool(v1, forKey: key)
+            }
+        }else if value is Double{
+            if let v1 = value as? Double{
+                self.setDouble(v1, forKey: key)
+            }
+        }else if value is NSDictionary{
+            if let v1 = value as? NSDictionary{
+                self.setDictionary(v1, forKey: key)
+            }
+        }else if value is NSArray{
+            if let v1 = value as? NSArray{
+                self.setArray(v1, forKey: key)
+            }
+        }
+    }
+
+    func string(forKey key:String)->String?{
         return self._getObject(forKey: key, type: .HCCacheDataTypeString)
     }
     
-    func hc_object(forkey key:String)->Any?{
-         return self.hc_String(forKey: key)   
-    }
     
-    func hc_Bool(forKey key:String)->Bool?{
+    func bool(forKey key:String)->Bool?{
         if let str = self._getObject(forKey: key, type: .HCCacheDataTypeBool){
             return Bool(str)
         }
         return nil
     }
     
-    func hc_Int(forKey key:String)->Int?{
+    func int(forKey key:String)->Int?{
         if let str =  self._getObject(forKey: key, type: .HCCacheDataTypeInt){
             return Int(str)
         }
         return nil
     }
     
-    func hc_Double(forKey key:String)->Double?{
+    func double(forKey key:String)->Double?{
         if let str =  self._getObject(forKey: key, type: .HCCacheDataTypeDouble){
             return Double(str)
         }
         return nil
     }
     
-    func hc_Array(forKey key: String) -> NSArray? {
+    func array(forKey key: String) -> NSArray? {
         if let res =  self._getObject(forKey: key, type: .HCCacheDataTypeArray){
             if let data = res.data(using: String.Encoding(rawValue: String.Encoding.utf8.rawValue)){
                 do {
@@ -315,7 +314,7 @@ extension HCDiskCacheOperator: HCCacheDelegate {
         return nil
     }
     
-    func hc_Dictionary(forKey key: String) -> NSDictionary? {
+    func dictionary(forKey key: String) -> NSDictionary? {
         if let res =  self._getObject(forKey: key, type: .HCCacheDataTypeDictionary){
             if let data = res.data(using: String.Encoding(rawValue: String.Encoding.utf8.rawValue)){
                 do {
@@ -331,31 +330,36 @@ extension HCDiskCacheOperator: HCCacheDelegate {
         }
         return nil
     }
-    func hc_removeString(forKey key:String)->Bool{
+    
+    func object(forkey key:String)->Any?{
+        return self.string(forKey: key)
+    }
+    
+    func removeString(forKey key:String)->Bool{
         return self._removeObject(forKey:key)
     }
     
-    func hc_removeBool(forKey key:String)->Bool{
+    func removeBool(forKey key:String)->Bool{
         return self._removeObject(forKey:key)
     }
     
-    func hc_removeInt(forKey key:String)->Bool{
+    func removeInt(forKey key:String)->Bool{
         return self._removeObject(forKey:key)
     }
     
-    func hc_removeDouble(forKey key:String)-> Bool{
+    func removeDouble(forKey key:String)-> Bool{
         return self._removeObject(forKey:key)
     }
     
-    func hc_removeArray(forKey key: String) -> Bool {
+    func removeArray(forKey key: String) -> Bool {
         return self._removeObject(forKey:key)
     }
     
-    func hc_removeDictionary(forKey key: String) -> Bool {
+    func removeDictionary(forKey key: String) -> Bool {
         return self._removeObject(forKey:key)
     }
     
-    func hc_remove(forKey key:String)->Bool{
+    func remove(forKey key:String)->Bool{
         return self._removeObject(forKey:key)
     }
 
